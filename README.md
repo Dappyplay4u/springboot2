@@ -5,43 +5,10 @@
 - Click on the symbol next to the REPLACE section to apply the changes to ever file in your source code.
 
 ## CICD Applications setup
-1) ###### GitHub setup
-    Fork GitHub Repository by using the existing repo "trump-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s.git)     
+1) ###### GitHub 
+    (https://github.com/Dappyplay4u/springboot2.git)
     - Go to GitHub (github.com)
     - Login to your GitHub Account
-    - **Fork repository "trump-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s.git)**
-    - Clone your newly created repo to your local
-
-
-2) ###### Jenkins/Maven/Ansible/terraform
-    - Create an **Amazon Linux 2 VM** instance and call it "Jenkins" !!! Do not use a linux2023 AMI
-    - Instance type: t2.large
-    - Security Group (Open): 8080, 9100 and 22 to 0.0.0.0/0
-    - Key pair: Select or create a new keypair
-    - **Attach Jenkins server with IAM role for ec2 service having "AdministratorAccess"**
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/jenkins-ansible-git-terraform-docker.sh
-    - Launch Instance
-    - After launching this Jenkins server, attach a tag as **Key=Application, value=jenkins**
-
-3) ###### SonarQube
-    - Create an Create an **Ubuntu 20.04** VM instance and call it "SonarQube"
-    - Instance type: t2.medium
-    - Security Group (Open): 9000, 9100 and 22 to 0.0.0.0/0
-    - Key pair: Select or create a new keypair
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/sonar.sh
-    - Launch Instance
-
-4) ###### Nexus
-    - Create an **Amazon Linux 2** VM instance and call it "Nexus" !!! Do not use a linux2023 AMI
-    - Instance type: t2.medium
-    - Security Group (Open): 8081, 9100 and 22 to 0.0.0.0/0
-    - Key pair: Select or create a new keypair
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/nexus.sh
-    - Launch Instance
-
-5) ######  S3 and Dynamodb
-- create s3 bucket and dynamodb table for terraform backend. Partition key for dynamo db must be "LockID"
-- Replace values for s3 and dynamodb in provider.tf file in the terraform directory in the source code i.e lines  4-12
 
 ### Jenkins setup
 1) #### Access Jenkins

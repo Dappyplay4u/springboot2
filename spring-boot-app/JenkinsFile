@@ -2,7 +2,8 @@ pipeline {
   agent any
   
   environment {
-        WORKSPACE = "${env.WORKSPACE}"
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "us-east-1"
     }
 
@@ -10,6 +11,7 @@ pipeline {
     terraform 'terraform'
     maven 'localMaven'
     jdk 'localJdk'
+    dockerTool 'docker'
   }
 
   stages {
@@ -89,7 +91,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://172.31.12.145:9000/"
+        SONAR_URL = "http://3.238.3.76:9000/"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -110,47 +112,24 @@ pipeline {
        }
      }
 
-    stage('Install docker') {
-          steps {
-              sh '''
-                  sh "sudo yum install docker -y" 
-                  sh "sudo systemctl start docker"
-                  sh "sudo systemctl  enable docker"
-                  sh "sudo usermod -a -G docker jenkins"
-              '''
-          }
-      }
-
-    stage('Build and Push Docker Image') {
-      environment {
-        awsAccountId = '849277819322'
-        region = 'us-east-1'
-        repositoryName = 'trump-demo'
-        dockerImageTag = "${BUILD_NUMBER}"
-        ecrRegistry = "${awsAccountId}.dkr.ecr.${region}.amazonaws.com"
-      }
-      steps {
-        script {
-
-            // // Install docker on jenkins server
-
-            // sh "sudo yum install docker -y" 
-            // sh "sudo systemctl start docker"
-            // sh "sudo systemctl  enable docker"
-            // sh "sudo usermod -a -G docker jenkins"
-            // Build the Docker image
-            sh "cd spring-boot-app && docker build -t ${repositoryName}:${dockerImageTag} ."
-
-            // Authenticate and push the Docker image to ECR
-                sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${ecrRegistry}"
-                sh "docker tag ${repositoryName}:${dockerImageTag} ${ecrRegistry}/${repositoryName}:${dockerImageTag}"
-                sh "docker push ${ecrRegistry}/${repositoryName}:${dockerImageTag}"
-                sh "docker rmi ${ecrRegistry}/${repositoryName}:${dockerImageTag}"
-                sh " docker rmi ${repositoryName}:${dockerImageTag}"
-      }
-    }
-
-    } 
+    stage("Docker Build & Push to dockerhub"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){ 
+                       sh 'cd spring-boot-app && docker build -t minecraft .'
+                       sh 'docker tag minecraft dappyplay4u/minecraft:latest'
+                       sh 'docker push dappyplay4u/minecraft:latest'
+                    }
+                }
+            }
+        }
+      
+        stage('Deploy to container') {
+            steps {
+                sh 'docker run -d -p 8095:8088 dappyplay4u/minecraft:latest'
+            }
+        }
+    
     
     stage('Install kubectl') {
             steps {
@@ -206,6 +185,4 @@ pipeline {
 
   }
 }
-
-
 

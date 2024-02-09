@@ -3,7 +3,7 @@ pipeline {
   
   environment {
         WORKSPACE = "${env.WORKSPACE}"
-        AWS_DEFAULT_REGION = "ca-central-1"
+        AWS_DEFAULT_REGION = "us-east-1"
     }
 
   tools {
@@ -16,7 +16,7 @@ pipeline {
     stage('Git Checkout') {
       steps {
         echo 'Cloning the application code...'
-        git branch: 'main', url: 'https://github.com/Lordcarter/jjtech-ci-cd-pipeline-project-k8s.git'
+        git branch: 'main', url: 'https://github.com/Dappyplay4u/springboot2.git'
       }
     }
 
@@ -124,8 +124,8 @@ pipeline {
     stage('Build and Push Docker Image') {
       environment {
         awsAccountId = '849277819322'
-        region = 'ca-central-1'
-        repositoryName = 'jjtech-demo'
+        region = 'us-east-1'
+        repositoryName = 'trump-demo'
         dockerImageTag = "${BUILD_NUMBER}"
         ecrRegistry = "${awsAccountId}.dkr.ecr.${region}.amazonaws.com"
       }
@@ -173,8 +173,8 @@ pipeline {
 
     stage("Deploy to EKS"){
         environment {
-        region = 'ca-central-1'
-        clusterName = 'jjtech-demo-cluster'
+        region = 'us-east-1'
+        clusterName = 'trump-demo-cluster'
       }       
         steps {  
           script {

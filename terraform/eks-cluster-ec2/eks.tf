@@ -2,8 +2,8 @@
 # This control plane can be used to attach self-managed, 
 # and aws managed nodes as well as you can create Fargate profiles.
 
-resource "aws_security_group" "jjtech_cluster" {
-  name        = "jjtech-cluster-sg"
+resource "aws_security_group" "trump_cluster" {
+  name        = "trump-cluster-sg"
   description = "Cluster communication with worker nodes"
   vpc_id      = aws_vpc.main.id
 
@@ -69,16 +69,16 @@ resource "aws_eks_cluster" "cluster" {
   role_arn = aws_iam_role.eks-cluster.arn
 
   vpc_config {
-    security_group_ids      = [aws_security_group.jjtech_cluster.id]
+    security_group_ids      = [aws_security_group.trump_cluster.id]
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
 
     subnet_ids = [
-      aws_subnet.private-ca-central-1a.id,
-      aws_subnet.private-ca-central-1b.id,
-      aws_subnet.public-ca-central-1a.id,
-      aws_subnet.public-ca-central-1b.id
+      aws_subnet.private-us-east-1a.id,
+      aws_subnet.private-us-east-1b.id,
+      aws_subnet.public-us-east-1a.id,
+      aws_subnet.public-us-east-1b.id
     ]
   }
 

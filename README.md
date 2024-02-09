@@ -6,10 +6,10 @@
 
 ## CICD Applications setup
 1) ###### GitHub setup
-    Fork GitHub Repository by using the existing repo "jjtech-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/jjtech-ci-cd-pipeline-project-k8s.git)     
+    Fork GitHub Repository by using the existing repo "trump-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s.git)     
     - Go to GitHub (github.com)
     - Login to your GitHub Account
-    - **Fork repository "jjtech-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/jjtech-ci-cd-pipeline-project-k8s.git)**
+    - **Fork repository "trump-ci-cd-pipeline-project-k8s" (https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s.git)**
     - Clone your newly created repo to your local
 
 
@@ -19,7 +19,7 @@
     - Security Group (Open): 8080, 9100 and 22 to 0.0.0.0/0
     - Key pair: Select or create a new keypair
     - **Attach Jenkins server with IAM role for ec2 service having "AdministratorAccess"**
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/jjtech-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/jenkins-ansible-git-terraform-docker.sh
+    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/jenkins-ansible-git-terraform-docker.sh
     - Launch Instance
     - After launching this Jenkins server, attach a tag as **Key=Application, value=jenkins**
 
@@ -28,7 +28,7 @@
     - Instance type: t2.medium
     - Security Group (Open): 9000, 9100 and 22 to 0.0.0.0/0
     - Key pair: Select or create a new keypair
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/jjtech-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/sonar.sh
+    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/sonar.sh
     - Launch Instance
 
 4) ###### Nexus
@@ -36,7 +36,7 @@
     - Instance type: t2.medium
     - Security Group (Open): 8081, 9100 and 22 to 0.0.0.0/0
     - Key pair: Select or create a new keypair
-    - User data (Copy the following user data): https://github.com/anselmenumbisia/jjtech-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/nexus.sh
+    - User data (Copy the following user data): https://github.com/anselmenumbisia/trump-ci-cd-pipeline-project-k8s/blob/main/installation-scripts/nexus.sh
     - Launch Instance
 
 5) ######  S3 and Dynamodb
@@ -180,14 +180,14 @@ Copy your Nexus Public IP Address and paste on the browser = http:://NexusServer
 ### GitHub webhook
 
 1) #### Add jenkins webhook to github
-    - Access your repo **jjtech-ci-cd-pipeline-project-k8s** on github
+    - Access your repo **trump-ci-cd-pipeline-project-k8s** on github
     - Goto Settings --> Webhooks --> Click on Add webhook 
     - Payload URL: **http://REPLACE-JENKINS-SERVER-PUBLIC-IP:8080/github-webhook/**             (Note: The IP should be public as GitHub is outside of the AWS VPC where Jenkins server is hosted)
     - Click on Add webhook
 
 2) #### Configure on the Jenkins side to pull based on the event
     - Access your jenkins server, pipeline **app-cicd-pipeline**
-    - Once pipeline is accessed --> Click on Configure --> In the General section --> **Select GitHub project checkbox** and fill your repo URL of the project jjtech-ci-cd-pipeline-project-k8s.
+    - Once pipeline is accessed --> Click on Configure --> In the General section --> **Select GitHub project checkbox** and fill your repo URL of the project trump-ci-cd-pipeline-project-k8s.
     - Scroll down --> In the Build Triggers section -->  **Select GitHub hook trigger for GITScm polling checkbox**
 
 Once both the above steps are done click on Save.
@@ -196,7 +196,7 @@ Once both the above steps are done click on Save.
 ### Codebase setup
 
 1) #### SonarQube IP change
-    - Go back to your local, open your "jjtech-ci-cd-pipeline-project-k8s" project on VSCODE
+    - Go back to your local, open your "trump-ci-cd-pipeline-project-k8s" project on VSCODE
     - Open "Jenkinsfile" & Replace the SonarQube server private ip on line number 92 (where you have SONAR_URL)
     - Save the changes in both files
     - Finally push changes to repo
@@ -208,7 +208,7 @@ Once both the above steps are done click on Save.
         `git push`
 
 2) #### Nexus IP's change
-    - Go back to your local, open your "jjtech-ci-cd-pipeline-project-k8s" project on VSCODE
+    - Go back to your local, open your "trump-ci-cd-pipeline-project-k8s" project on VSCODE
     - Open "pom.xml" & Replace the nexus server private ip on line numbers 60 & 64
     - Open nexus-setup/settings.xml & Replace the nexus server private ip on line numbers 21
     - Save the changes in both files
@@ -222,7 +222,7 @@ Once both the above steps are done click on Save.
 
 ### Docker Registry (ECR)
 - Navigate to AWS and search for ECR service
-- click to create repository (private) --> Provide repo name (jjtech-demo) --> create repo
+- click to create repository (private) --> Provide repo name (trump-demo) --> create repo
 - click on **view push commands** to get username and password to push images to repo
 
 ### Update aws cli to version 2
@@ -243,5 +243,6 @@ Once both the above steps are done click on Save.
 - Get public of workernode servers for cluster
 - modify security group to allow all inbound traffic from 30080 (The sample app deployed in the cluster is exposed using a NodepOrt service and the nodePort is 30080)
 - copy pulic ip of the cluster worker server and and run on browser. you need to add a colon and the nodePort number in order to access the application on the browser e.g http://example_ip:30080
-#   s p r i n g b o o t 2  
+#   s p r i n g b o o t 2 
+ 
  

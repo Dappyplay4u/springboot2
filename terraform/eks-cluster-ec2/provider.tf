@@ -1,23 +1,23 @@
 # We need to declare aws terraform provider. You may want to update the aws region
 
-terraform {
-  backend "s3" {
-    # Replace this with your bucket name!
-    bucket         = "lordc112023"
-    key            = "lordcarter2027/terraform.tfstate"
-    region         = "ca-central-1"
+# terraform {
+#   backend "s3" {
+#     # Replace this with your bucket name!
+#     bucket         = "lordc112023"
+#     key            = "lordcarter2027/terraform.tfstate"
+#     region         = "us-east-1"
 
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "lordc2023"
-  }
+#     # Replace this with your DynamoDB table name!
+#     dynamodb_table = "lordc2023"
+#   }
   
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.67.0"
-    }
-  }
-}
+#   required_providers {
+#     aws = {
+#       source  = "hashicorp/aws"
+#       version = "4.67.0"
+#     }
+#   }
+# }
 
 provider "aws" {
   region = var.region
